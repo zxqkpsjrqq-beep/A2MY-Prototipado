@@ -1,0 +1,15 @@
+PULSO PLANTA - COMO PARTIR
+
+WINDOWS
+ 1. Instala Python (python.org) marcando "Add Python to PATH". Solo la primera vez.
+ 2. Descomprime esta carpeta y haz doble clic en INICIAR_WINDOWS.bat
+ 3. Se abre el navegador solo. Ingresa con cualquier nombre y correo.
+ 4. Para ver una alerta: con la app abierta, doble clic en SIMULAR_FALLA_WINDOWS.bat
+    y mira la cinta CT-04 en la app.
+
+MAC / LINUX
+ 1. Terminal en esta carpeta:  bash iniciar_mac_linux.sh
+ 2. Para la falla simulada:     bash simular_falla_mac_linux.sh
+
+CELULAR: misma WiFi, abre http://IP-DEL-COMPUTADOR:8000
+(la camara del QR necesita HTTPS; mientras tanto usa el campo de ID).

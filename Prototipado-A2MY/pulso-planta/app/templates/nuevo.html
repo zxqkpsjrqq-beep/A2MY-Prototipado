@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block c %}
+<form class="card" method="post" action="/nuevo"><h3 style="margin-top:0">Registrar equipo</h3>
+{% for n,l in [('id','ID / código QR'),('nombre','Nombre del equipo'),('modelo','Modelo'),('fabricante','Fabricante'),('pais','País de origen'),('anio_modelo','Año modelo'),('anio_fab','Año de fabricación'),('serie','N° de serie / ID sensor'),('zona','Zona o línea')] %}
+<label class="mu">{{ l }}</label><input name="{{ n }}" {{ 'required' if n in ['id','nombre'] }}>{% endfor %}
+<button>Guardar equipo</button></form>{% endblock %}

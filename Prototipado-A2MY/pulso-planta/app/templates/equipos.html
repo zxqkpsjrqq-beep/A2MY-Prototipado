@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block c %}
+<div class="card"><div class="row"><b>Resumen de planta</b><span class="mu">{{ rows|length }} equipos</span></div>
+<div class="row" style="margin-top:8px"><span class="pill e0">{{ c[0] }} normal</span><span class="pill e1">{{ c[1] }} revisar</span><span class="pill e2">{{ c[2] }} crítico</span></div></div>
+{% for e, ult, rms in rows %}
+<a class="card" href="/equipo/{{ e.id }}"><div class="row"><b>{{ e.nombre }}</b><span class="pill e{{ e.estado }}">{{ ESTADOS[e.estado] }}</span></div>
+<div class="mu">{{ e.id }} · {{ e.modelo }} · {{ e.zona }}</div>
+<div class="row" style="margin-top:6px"><span class="mu">{{ rms }} mm/s</span><span class="mu">Últ. mant.: {{ ult }}</span></div>
+<div class="bar"><i class="{{ 'e2' if rms>=LC else 'e1' if rms>=LA else 'e0' }}" style="width:{{ [rms/LC*100,100]|min|round }}%"></i></div></a>
+{% endfor %}{% endblock %}

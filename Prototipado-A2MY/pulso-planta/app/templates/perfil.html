@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block c %}
+<div class="card"><div class="row"><div><b style="font-size:18px">{{ u.nombre }}</b><div class="mu">Operador de planta</div></div><span class="pill ac">{{ u.codigo }}</span></div>
+<table style="margin-top:8px"><tr><td>Correo de empresa</td><td>{{ u.correo }}</td></tr><tr><td>Área encargada</td><td>{{ u.area }}</td></tr><tr><td>Encargada de planta</td><td>{{ enc.nombre }}</td></tr></table></div>
+<h3>Mi registro total ({{ ev|length }})</h3>
+{% for x in ev %}<div class="card"><div class="row"><b>{{ x.equipo_id }}</b><span class="mu">{{ x.ts.strftime('%d/%m %H:%M') }}</span></div><div class="mu">{{ x.texto }}</div></div>{% endfor %}
+<a class="btn sec" href="/logout">Cerrar sesión</a>{% endblock %}

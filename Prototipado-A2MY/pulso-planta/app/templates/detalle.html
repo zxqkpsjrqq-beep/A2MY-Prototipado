@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block c %}
+<a class="mu" href="/">← Equipos</a>
+<div class="row" style="margin-top:6px"><h2 style="margin:0;font-size:19px">{{ e.nombre }}</h2><span class="pill e{{ e.estado }}">{{ ESTADOS[e.estado] }}</span></div>
+<div class="mu">{{ e.id }} · {{ e.zona }}</div>
+{% if e.estado > 0 %}<div class="banner e{{ e.estado }}"><b>{{ ['','⚠ Posible anomalía','⛔ Falla potencial confirmada','🔧 Técnico asignado'][e.estado] }}</b>
+<div style="font-size:13px">{{ ['','Revisa el equipo y registra el resultado.','Riesgo de falla total. Escala y llama a un técnico.','Técnico: ' ~ e.tecnico][e.estado] }}</div></div>{% endif %}
+{% if e.estado == 1 %}<form class="card" method="post" action="/equipo/{{ e.id }}/revision"><b>Checklist de revisión</b>
+{% for x in ['Ruido anormal','Temperatura elevada','Pernos o base sueltos','Falta de lubricación'] %}<label style="display:block;padding:4px 0"><input type="checkbox" style="width:auto;margin:0 8px 0 0">{{ x }}</label>{% endfor %}
+<button class="amb" name="resultado" value="confirmar">Confirmar falla potencial y escalar</button>
+<button class="sec" style="background:transparent" name="resultado" value="falsa">Falsa alarma · volver a normal</button></form>{% endif %}
+{% if e.estado == 2 %}<form class="card" method="post" action="/equipo/{{ e.id }}/llamar"><b>Escalar a técnico</b><div class="mu">Se avisa a {{ enc.nombre }} y a mantención.</div>
+<select name="tecnico">{% for t in tecnicos %}<option>{{ t }}</option>{% endfor %}</select><button class="red">📞 Llamar a técnico y generar OT</button></form>{% endif %}
+{% if e.estado == 3 %}<form class="card" method="post" action="/equipo/{{ e.id }}/cerrar"><b>OT abierta</b> · prioridad alta<button>Marcar reparación terminada</button></form>{% endif %}
+<div class="tabs">{% for k,l in [('ficha','Ficha'),('vib','Vibración'),('mant','Mantenciones')] %}<a class="{{ 'on' if sub==k }}" href="?tab={{ k }}">{{ l }}</a>{% endfor %}</div>
+{% if sub == 'ficha' %}<div class="card"><table>
+<tr><td>Modelo</td><td><b>{{ e.modelo }}</b></td></tr><tr><td>Fabricante</td><td>{{ e.fabricante }}</td></tr>
+<tr><td>País de origen</td><td>{{ e.pais }}</td></tr><tr><td>Año modelo</td><td>{{ e.anio_modelo }}</td></tr>
+<tr><td>Año de fabricación</td><td>{{ e.anio_fab }}</td></tr><tr><td>N° de serie</td><td>{{ e.serie }}</td></tr>
+<tr><td>Horas de uso</td><td>{{ e.horas }} h</td></tr><tr><td>Ubicación</td><td>{{ e.zona }}</td></tr>
+<tr><td>Última mantención</td><td>{{ ult }}</td></tr><tr><td>Código QR</td><td>{{ e.id }}</td></tr></table></div>
+{% elif sub == 'vib' %}<div class="card"><div class="row"><b>Vibración RMS (últimas 24 lecturas)</b><b>{{ rms }} mm/s</b></div>
+<svg viewBox="0 0 360 130" width="100%"><line x1="10" x2="350" y1="{{ ya }}" y2="{{ ya }}" stroke="#d98200" stroke-dasharray="4"/>
+<line x1="10" x2="350" y1="{{ yc }}" y2="{{ yc }}" stroke="#c8321e" stroke-dasharray="4"/>
+<text x="12" y="{{ ya-3 }}" font-size="9" fill="#d98200">Alerta {{ LA }}</text><text x="12" y="{{ yc-3 }}" font-size="9" fill="#c8321e">Crítico {{ LC }}</text>
+<polyline fill="none" stroke="#0e9a90" stroke-width="2.5" points="{{ pts }}"/></svg></div>
+{% else %}{% for est in ['En proceso','Terminado'] %}<h3>{{ est }}</h3>
+{% for m in mant if m.estado == est %}<div class="card"><div class="row"><b>{{ m.tipo }}</b><span class="pill {{ 'e0' if est=='Terminado' else 'e1' }}">{{ est }}</span></div>
+<div class="mu">{{ m.fecha }} · Téc. {{ m.tecnico }}</div><div>{{ m.nota }}</div></div>{% else %}<div class="mu">Ninguna</div>{% endfor %}{% endfor %}
+<form class="card" method="post" action="/equipo/{{ e.id }}/mantencion"><b>Registrar mantención</b>
+<select name="tipo"><option>Preventivo</option><option>Correctivo</option><option>Inspección</option></select>
+<input name="nota" placeholder="Descripción del trabajo" required><button>Guardar como en proceso</button></form>{% endif %}
+{% endblock %}

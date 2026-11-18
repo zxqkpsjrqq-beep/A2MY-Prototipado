@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block c %}
+<div id="reader"></div><p class="mu">La cámara requiere HTTPS (o localhost). Si no funciona, escribe el ID del equipo.</p>
+<form class="card" onsubmit="location='/qr/'+encodeURIComponent(this.id.value.trim().toUpperCase());return false"><label class="mu">ID del equipo (lo que dice el QR)</label>
+<input name="id" list="ids" placeholder="LL-01"><datalist id="ids">{% for e in equipos %}<option value="{{ e.id }}">{% endfor %}</datalist><button>Abrir ficha</button></form>
+<a class="btn sec" href="/nuevo">Equipo sin QR · registrar manual</a>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+try{new Html5Qrcode("reader").start({facingMode:"environment"},{fps:10,qrbox:220},
+t=>{location='/qr/'+encodeURIComponent(t.split('/').pop())},()=>{}).catch(()=>{})}catch(e){}
+</script>{% endblock %}

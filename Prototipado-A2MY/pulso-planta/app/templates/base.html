@@ -1,0 +1,19 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Pulso Planta</title>
+<link rel="stylesheet" href="/static/style.css"></head><body><div id="app">
+{% if u %}<header><div><h1>● Pulso Planta</h1><small>{{ u.codigo }} · {{ u.area }}</small></div>
+<button class="sos" onclick="document.getElementById('sos').showModal()">🆘 EMERGENCIA</button></header>{% endif %}
+<main>{% if msg %}<div class="toast">{{ msg }}</div>{% endif %}{% block c %}{% endblock %}</main>
+{% if u %}<nav>
+<a href="/" class="{{ 'on' if tab=='eq' }}"><i>▦</i>Equipos</a>
+<a href="/escanear" class="{{ 'on' if tab=='sc' }}"><i>◩</i>Escanear QR</a>
+<a href="/alertas" class="{{ 'on' if tab=='al' }}"><i>◬</i>Alertas</a>
+<a href="/perfil" class="{{ 'on' if tab=='pf' }}"><i>☺</i>Perfil</a></nav>
+<dialog id="sos"><h2 style="margin:0;color:var(--cr)">🆘 Emergencia</h2>
+<div class="card" style="margin-top:10px"><b>{{ enc.nombre }}</b><div class="mu">{{ enc.cargo }} · {{ enc.fono }}</div></div>
+<a class="btn red" href="tel:{{ enc.fono }}">📞 Llamar ahora</a>
+<form method="post" action="/sos"><input type="hidden" name="equipo" value="{{ eq_id|default('') }}">
+<select name="tipo"><option>Falla grave de equipo</option><option>Accidente / lesión</option><option>Riesgo de incendio o fuga</option><option>Otra</option></select>
+<button class="sec" style="background:transparent">Enviar alerta con mi equipo y área</button></form>
+<button class="sec" style="background:transparent" onclick="document.getElementById('sos').close()">Cancelar</button></dialog>{% endif %}
+</div></body></html>

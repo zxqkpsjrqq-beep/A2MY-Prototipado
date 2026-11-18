@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block c %}
+<h1 style="margin:6px 0 14px">● Pulso Planta</h1>
+<form class="card" method="post" action="/login"><h3 style="margin-top:0">Ingreso de usuario</h3>
+<label class="mu">ID de usuario</label><input name="codigo" value="OP-2041" required>
+<label class="mu">Nombre completo</label><input name="nombre" required>
+<label class="mu">Correo de empresa</label><input name="correo" type="email" required>
+<label class="mu">Área encargada</label><select name="area"><option>Mantención</option><option>Producción</option><option>Calidad</option><option>Logística</option></select>
+<button>Ingresar a planta</button></form>
+<p class="mu">Prototipo: sin contraseña. En producción usar login corporativo (Microsoft/Google).</p>
+{% endblock %}

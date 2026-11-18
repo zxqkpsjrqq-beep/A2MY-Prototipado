@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block c %}
+<h3 style="margin-top:0">Activas ({{ act|length }})</h3>
+{% for e in act %}<a class="card" href="/equipo/{{ e.id }}"><div class="row"><b>{{ e.nombre }}</b><span class="pill e{{ e.estado }}">{{ ESTADOS[e.estado] }}</span></div><div class="mu">{{ e.id }}</div></a>
+{% else %}<div class="card mu">Sin alertas activas ✔</div>{% endfor %}
+<h3>Eventos de planta</h3>
+{% for x in ev %}<div class="card"><div class="row"><b>{{ x.equipo_id }}</b><span class="mu">{{ x.ts.strftime('%d/%m %H:%M') }} · {{ x.usuario }}</span></div><div class="mu">{{ x.texto }}</div></div>{% endfor %}
+{% endblock %}
